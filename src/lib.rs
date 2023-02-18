@@ -58,22 +58,26 @@ impl Board {
     }
 }
 
+impl fmt::Display for Piece {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.pad(match self {
+            Piece::Red => "R",
+            Piece::RedKing => "RK",
+            Piece::Black => "B",
+            Piece::BlackKing => "BK",
+            Piece::Empty => "E"
+        })
+    }
+}
+
 impl fmt::Display for Board {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut string = "".to_string();
-
         for (i, v) in self.data.iter().enumerate() {
-            if i % 8 == 0 { string += "\n\n"; }
-            string += &(match v {
-                Piece::Red => "R ",
-                Piece::RedKing => "RK",
-                Piece::Black => "B ",
-                Piece::BlackKing => "BK",
-                Piece::Empty => "E "
-            }.to_owned() + " ")[..];
+            if i % 8 == 0 { f.write_str("\n\n")?; }
+            write!(f, "{v:<3}")?;
         }
         
-        write!(f, "{string}")
+        Ok(())
     }
 }
 
