@@ -55,6 +55,32 @@ impl Board {
 
     fn advance(&mut self, (x, y): (u8, u8), direction: Direction) {
         let piece = self.get(x, y);
+
+        match piece {
+            Piece::Red => match direction {
+                Direction::Forward(Side::Left) => {},
+                Direction::Forward(Side::Right) => {},
+                _ => return
+            },
+            Piece::RedKing => match direction {
+                Direction::Forward(Side::Left) => {},
+                Direction::Forward(Side::Right) => {},
+                Direction::Backward(Side::Left) => {},
+                Direction::Backward(Side::Right) => {}
+            },
+            Piece::Black => match direction {
+                Direction::Forward(Side::Left) => {},
+                Direction::Forward(Side::Right) => {},
+                _ => return
+            },
+            Piece::BlackKing => match direction {
+                Direction::Forward(Side::Left) => {},
+                Direction::Forward(Side::Right) => {},
+                Direction::Backward(Side::Left) => {},
+                Direction::Backward(Side::Right) => {}
+            },
+            Piece::Empty => return
+        }
     }
 }
 
