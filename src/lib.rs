@@ -1,21 +1,31 @@
 use std::fmt;
 
+pub enum Side {
+    Left,
+    Right
+}
+
+pub enum Direction {
+    Forward(Side),
+    Backward(Side)
+}
+
 #[derive(Clone, Copy)]
 pub enum Piece {
     Red,
+    RedKing,
     Black,
+    BlackKing,
     Empty
 }
 
 struct Board {
-    turn: bool,
     data: Vec<Piece>
 }
 
 impl Board {
     fn new() -> Self {
         Self {
-            turn: false,
             data: {
                 let mut vec = vec![Piece::Empty; 64];
 
@@ -39,13 +49,12 @@ impl Board {
         }
     }
 
-    fn advance(&mut self) {
-        match self.turn {
-            true => {},
-            false => {}
-        }
+    fn get(&self, x: u8, y: u8) -> Piece {
+        self.data[(y * 8 + x) as usize]
+    }
 
-        self.turn = !self.turn;
+    fn advance(&mut self, (x, y): (u8, u8), direction: Direction) {
+        let piece = self.get(x, y);
     }
 }
 
@@ -54,11 +63,13 @@ impl fmt::Display for Board {
         let mut string = "".to_string();
 
         for (i, v) in self.data.iter().enumerate() {
-            if i % 8 == 0 { string += "\n"; }
+            if i % 8 == 0 { string += "\n\n"; }
             string += &(match v {
-                Piece::Red => "R",
-                Piece::Black => "B",
-                Piece::Empty => "E"
+                Piece::Red => "R ",
+                Piece::RedKing => "RK",
+                Piece::Black => "B ",
+                Piece::BlackKing => "BK",
+                Piece::Empty => "E "
             }.to_owned() + " ")[..];
         }
         
